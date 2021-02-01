@@ -1,7 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
 
@@ -12,7 +14,62 @@
             </ui:define>
 
             <ui:define name="content">
-                content
+                <h:form id="formBusc">
+                    <h:outputText value="BUSCAR INTERESADO POR CRITERIO" styleClass="titulo"/><br/>
+                    <h:panelGrid title="interesados" columns="3">
+                        Nombre:<h:inputText id="campoNombre" value="#{gestionSolicitudesMB.interesado.nombre}" required="true" disabled="#{gestionSolicitudesMB.editable}"/>
+                        <h:message for="campoNombre"/>
+                        Apellidos:<h:inputText id="campoApellido" value="#{gestionSolicitudesMB.interesado.apellidos}" required="true" disabled="#{gestionSolicitudesMB.editable}"/>
+                        <h:message for="campoApellido"/>
+                        Empresa:<h:inputText id="campoEmpresa" value="#{gestionSolicitudesMB.interesado.empresa}" required="true" disabled="#{gestionSolicitudesMB.editable}"/>
+                        <h:message for="campoEmpresa"/>
+                        <h:commandButton value="Buscar" action="#{gestionSolicitudesMB.buscar()}" rendered="#{!gestionSolicitudesMB.visible}"/>
+                        <h:commandButton value="Nuevo" action="#{gestionSolicitudesMB.modoNuevo()}" immediate="true" rendered="#{!gestionSolicitudesMB.visible}"/>
+                    </h:panelGrid>
+                </h:form>
+                <br/>
+                <h:form id="formAlta" rendered="#{gestionSolicitudesMB.visible}">
+                    <h:outputText/><br/>
+                    <h:panelGrid columns="6">
+                        Nombre:<h:inputText id="campoNombre" value="#{gestionSolicitudesMB.interesado.nombre}" required="true" disabled="#{gestionSolicitudesMB.editable}"/>
+                        <h:message for="campoNombre"/>
+                        Apellidos:<h:inputText id="campoApellido" value="#{gestionSolicitudesMB.interesado.apellidos}" required="true" disabled="#{gestionSolicitudesMB.editable}"/>
+                        <h:message for="campoApellido"/>
+                        Empresa:<h:inputText id="campoEmpresa" value="#{gestionSolicitudesMB.interesado.empresa}" required="true" disabled="#{gestionSolicitudesMB.editable}"/>
+                        <h:message for="campoEmpresa"/>
+                        Email:<h:inputText id="campoEmail" value="#{gestionSolicitudesMB.interesado.EMail}" required="true" disabled="#{gestionSolicitudesMB.editable}"/>
+                        <h:message for="campoTel"/>
+                        Telefono:<h:inputText id="campoTel" value="#{gestionSolicitudesMB.interesado.telefono}" required="true" disabled="#{gestionSolicitudesMB.editable}">
+                            <f:convertNumber pattern="##########"/>
+                        </h:inputText>
+                        <h:message for="campoMovil" />
+                        Móvil:<h:inputText id="campoMovil" value="#{gestionSolicitudesMB.interesado.movil}" required="true" disabled="#{gestionSolicitudesMB.editable}">
+                            <f:convertNumber pattern="##########"/>
+                        </h:inputText>
+                        <h:message for="campoProvincia" />
+                        Provincia:<h:inputText id="campoProvincia" value="#{gestionSolicitudesMB.interesado.provincia}" required="true" disabled="#{gestionSolicitudesMB.editable}"/>
+                        <h:message for="campoProvincia"/>
+                    </h:panelGrid>
+                    <h:commandButton value="Cancelar" action="#{gestionSolicitudesMB.cancelar()}" immediate="true" />
+                    <h:commandButton value="GrabarModificacion" action="#{gestionSolicitudesMB.grabar()}" rendered="#{gestionSolicitudesMB.accionModificar}"/>
+                    <h:commandButton value="GrabarNuevo" action="#{gestionSolicitudesMB.grabar()}" rendered="#{gestionSolicitudesMB.accionNuevo}"/>
+                    <h:commandButton value="Editar" action="#{gestionSolicitudesMB.editar()}" immediate="true" rendered="#{gestionSolicitudesMB.accionNuevo}"/>
+                </h:form>
+                <br/>
+                
+                <h:form id="formListaSol" rendered="#{gestionSolicitudesMB.visible}">
+                    <h:outputText value="LISTA SOLICITUDES" styleClass="titulo"/><br/>
+                    <h:dataTable value="#{gestionSolicitudesMB.interesado.solicitudInfoList}" var="item" rendered="#{gestionSolicitudesMB.visible}" border="1">
+                        <h:column>
+                            <f:facet name="header">Fecha Solicitud</f:facet>
+                            <h:outputText value="#{item.fechaSolicitud}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Tema interes</f:facet>
+                            <h:outputText value="#{item.categoria.categoria}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:form>
             </ui:define>
 
         </ui:composition>
