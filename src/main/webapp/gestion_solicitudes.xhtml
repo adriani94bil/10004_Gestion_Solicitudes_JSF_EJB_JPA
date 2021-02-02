@@ -17,11 +17,11 @@
                 <h:form id="formBusc">
                     <h:outputText value="BUSCAR INTERESADO POR CRITERIO" styleClass="titulo"/><br/>
                     <h:panelGrid title="interesados" columns="3">
-                        Nombre:<h:inputText id="campoNombre" value="#{gestionSolicitudesMB.interesado.nombre}" required="true" disabled="#{gestionSolicitudesMB.editable}"/>
+                        Nombre:<h:inputText id="campoNombre" value="#{gestionSolicitudesMB.interesado.nombre}"  disabled="#{gestionSolicitudesMB.editable}"/>
                         <h:message for="campoNombre"/>
-                        Apellidos:<h:inputText id="campoApellido" value="#{gestionSolicitudesMB.interesado.apellidos}" required="true" disabled="#{gestionSolicitudesMB.editable}"/>
+                        Apellidos:<h:inputText id="campoApellido" value="#{gestionSolicitudesMB.interesado.apellidos}"  disabled="#{gestionSolicitudesMB.editable}"/>
                         <h:message for="campoApellido"/>
-                        Empresa:<h:inputText id="campoEmpresa" value="#{gestionSolicitudesMB.interesado.empresa}" required="true" disabled="#{gestionSolicitudesMB.editable}"/>
+                        Empresa:<h:inputText id="campoEmpresa" value="#{gestionSolicitudesMB.interesado.empresa}"  disabled="#{gestionSolicitudesMB.editable}"/>
                         <h:message for="campoEmpresa"/>
                         <h:commandButton value="Buscar" action="#{gestionSolicitudesMB.buscar()}" rendered="#{!gestionSolicitudesMB.visible}"/>
                         <h:commandButton value="Nuevo" action="#{gestionSolicitudesMB.modoNuevo()}" immediate="true" rendered="#{!gestionSolicitudesMB.visible}"/>
@@ -39,21 +39,21 @@
                         <h:message for="campoEmpresa"/>
                         Email:<h:inputText id="campoEmail" value="#{gestionSolicitudesMB.interesado.EMail}" required="true" disabled="#{gestionSolicitudesMB.editable}"/>
                         <h:message for="campoTel"/>
-                        Telefono:<h:inputText id="campoTel" value="#{gestionSolicitudesMB.interesado.telefono}" required="true" disabled="#{gestionSolicitudesMB.editable}">
-                            <f:convertNumber pattern="##########"/>
+                        Telefono:<h:inputText id="campoTel" value="#{gestionSolicitudesMB.interesado.telefono}" required="false" disabled="#{gestionSolicitudesMB.editable}">
+                            <f:convertNumber pattern="#########"/>
                         </h:inputText>
                         <h:message for="campoMovil" />
-                        Móvil:<h:inputText id="campoMovil" value="#{gestionSolicitudesMB.interesado.movil}" required="true" disabled="#{gestionSolicitudesMB.editable}">
-                            <f:convertNumber pattern="##########"/>
+                        Móvil:<h:inputText id="campoMovil" value="#{gestionSolicitudesMB.interesado.movil}" required="false" disabled="#{gestionSolicitudesMB.editable}">
+                            <f:convertNumber pattern="#########"/>
                         </h:inputText>
                         <h:message for="campoProvincia" />
                         Provincia:<h:inputText id="campoProvincia" value="#{gestionSolicitudesMB.interesado.provincia}" required="true" disabled="#{gestionSolicitudesMB.editable}"/>
                         <h:message for="campoProvincia"/>
                     </h:panelGrid>
                     <h:commandButton value="Cancelar" action="#{gestionSolicitudesMB.cancelar()}" immediate="true" />
-                    <h:commandButton value="GrabarModificacion" action="#{gestionSolicitudesMB.grabar()}" rendered="#{gestionSolicitudesMB.accionModificar}"/>
+<!--                    <h:commandButton value="GrabarModificacion" action="#{gestionSolicitudesMB.grabar()}" rendered="#{gestionSolicitudesMB.accionModificar}"/>-->
                     <h:commandButton value="GrabarNuevo" action="#{gestionSolicitudesMB.grabar()}" rendered="#{gestionSolicitudesMB.accionNuevo}"/>
-                    <h:commandButton value="Editar" action="#{gestionSolicitudesMB.editar()}" immediate="true" rendered="#{gestionSolicitudesMB.accionNuevo}"/>
+                    <h:commandButton value="Editar" action="#{gestionSolicitudesMB.editar()}" immediate="true" rendered="#{gestionSolicitudesMB.accionModificar}"/>
                 </h:form>
                 <br/>
                 

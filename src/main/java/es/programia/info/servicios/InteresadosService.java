@@ -24,13 +24,13 @@ public class InteresadosService implements InteresadosServiceLocal{
     @Override
     public Interesado buscarInteresadoPorCriterio(String nombre, String apellidos, String empresa) throws GestionSolicitudesException {
         Query query=em.createNamedQuery("Interesado.findByNombreApellidosEmpresa");
-        if (nombre==null) {
+        if (nombre==null || nombre.trim().length() == 0) {
             nombre="%";
         }
-        if (apellidos==null) {
+        if (apellidos==null || apellidos.trim().length() == 0) {
             apellidos="%";
         }
-        if (empresa==null) {
+        if (empresa==null || empresa.trim().length() == 0) {
             empresa="%";
         }
         

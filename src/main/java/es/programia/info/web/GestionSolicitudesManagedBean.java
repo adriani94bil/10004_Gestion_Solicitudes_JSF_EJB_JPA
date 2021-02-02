@@ -9,19 +9,23 @@ import es.programia.excepciones.GestionSolicitudesException;
 import es.programia.info.entidades.Interesado;
 import es.programia.info.servicios.InteresadosServiceLocal;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import javax.faces.view.ViewScoped;
 
 /**
  *
  * @author user
  */
 @Named(value = "gestionSolicitudesMB")
-@ViewScoped
+@SessionScoped
 public class GestionSolicitudesManagedBean implements Serializable {
 
     private Interesado interesado;
@@ -75,6 +79,7 @@ public class GestionSolicitudesManagedBean implements Serializable {
     public void setAccionNuevo(boolean accionNuevo) {
         this.accionNuevo = accionNuevo;
     }
+
     
     
 
@@ -93,48 +98,56 @@ public class GestionSolicitudesManagedBean implements Serializable {
     }
     @PostConstruct
     public void inicializar(){
-        interesado=new Interesado();
+        interesado= new Interesado();
         editable=false;
         visible=false;
-        accionModificar=true;
-        accionNuevo=true;
+        accionModificar=false;
+        accionNuevo=false;
     }
     
     //Acciones
     public void buscar(){
         try {
-            Interesado interesadoBusc=new Interesado();
-            interesadoBusc=servicio.buscarInteresadoPorCriterio(this.interesado.getNombre(), this.interesado.getApellidos() , this.interesado.getEmpresa());
+            setInteresado(servicio.buscarInteresadoPorCriterio(this.interesado.getNombre(), this.interesado.getApellidos() , this.interesado.getEmpresa()));
+//            this.interesado=servicio.buscarInteresadoPorCriterio(this.interesado.getNombre(), this.interesado.getApellidos() , this.interesado.getEmpresa());
             setEditable(false);
             setVisible(true);
-            // Guardo el interesado buscado dentro de la variable interesado
-            interesado=interesadoBusc;
+            setAccionModificar(true);
             
         } catch (GestionSolicitudesException ex) {
-            Logger.getLogger(GestionSolicitudesManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            log.info("No se encontro usuario");
+            FacesContext fc= FacesContext.getCurrentInstance();
+            fc.addMessage(null, new FacesMessage("No se pudo encontrar"+ex.getMessage()) );
         }
     }
     public void modoNuevo(){
-        try {
-            Interesado interesadoBusc=new Interesado();
-            interesadoBusc=servicio.buscarInteresadoPorCriterio(this.interesado.getNombre(), this.interesado.getApellidos() , this.interesado.getEmpresa());
-            setEditable(true);
+            setEditable(false);
             setVisible(true);
-            // Guardo el interesado buscado dentro de la variable interesado
-            interesado=interesadoBusc;
-            
-        } catch (GestionSolicitudesException ex) {
-            Logger.getLogger(GestionSolicitudesManagedBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            setAccionNuevo(true);
     }
     public void cancelar(){
-        setEditable(false);
-        setVisible(false);
+        inicializar();
     }
     public void grabar(){
-        
+        try {
+            this.interesado.setFechaAlta(new Date(System.currentTimeMillis()));
+            this.interesado.setVersion(1);
+            servicio.CrearNuevoInteresado(interesado);
+        } catch (GestionSolicitudesException ex) {
+            Logger.getLogger(GestionSolicitudesManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext fc= FacesContext.getCurrentInstance();
+            fc.addMessage(null, new FacesMessage("No se pudo grabar"+ex.getMessage()) );
+        }
     }
     public void editar(){
-        
+        try {
+            interesado.setFechaAlta(new Date(System.currentTimeMillis()));
+            interesado.setVersion(1);
+            servicio.modificarInteresado(interesado);
+        } catch (GestionSolicitudesException ex) {
+            Logger.getLogger(GestionSolicitudesManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext fc= FacesContext.getCurrentInstance();
+            fc.addMessage(null, new FacesMessage("No se pudo editar"+ex.getMessage()) );
+        }
     }
 }
